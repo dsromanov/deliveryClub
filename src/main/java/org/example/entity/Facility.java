@@ -1,20 +1,20 @@
 package org.example.entity;
 
 public class Facility {
-    private int id;
+    private Long id;
     private String name;
     private double rating;
-    private int cityId;
-    private int typeId;
+    private Long cityId;
+    private Long typeId;
     public Facility(){
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -34,19 +34,19 @@ public class Facility {
         this.rating = rating;
     }
 
-    public int getCityId() {
+    public Long getCityId() {
         return cityId;
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(Long cityId) {
         this.cityId = cityId;
     }
 
-    public int getTypeId() {
+    public Long getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
 
@@ -68,12 +68,12 @@ public class Facility {
     public int hashCode() {
         int result;
         long temp;
-        result = id;
+        result = id.hashCode();
         result = 31 * result + name.hashCode();
         temp = Double.doubleToLongBits(rating);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + cityId;
-        result = 31 * result + typeId;
+        result = 31 * result + cityId.hashCode();
+        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
         return result;
     }
 

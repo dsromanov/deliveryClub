@@ -1,18 +1,18 @@
 package org.example.entity;
 
 public class Type {
-    private int id;
+    private Long id;
     private  String type;
-    private int typeOfFoodId;
+    private Long typeOfFoodId;
     public Type(){
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -24,11 +24,11 @@ public class Type {
         this.type = type;
     }
 
-    public int getTypeOfFoodId() {
+    public Long getTypeOfFoodId() {
         return typeOfFoodId;
     }
 
-    public void setTypeOfFoodId(int typeOfFoodId) {
+    public void setTypeOfFoodId(Long typeOfFoodId) {
         this.typeOfFoodId = typeOfFoodId;
     }
 
@@ -46,9 +46,9 @@ public class Type {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id.hashCode();
         result = 31 * result + type.hashCode();
-        result = 31 * result + typeOfFoodId;
+        result = 31 * result + (typeOfFoodId != null ? typeOfFoodId.hashCode() : 0);
         return result;
     }
 

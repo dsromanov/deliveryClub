@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 public class User {
-    private int id;
+    private Long id;
     private String firstName;
     private String midName;
     private String lastName;
@@ -12,17 +12,17 @@ public class User {
     private String password;
     private String email;
     private boolean isBlocked;
-    private int cityId;
+    private Long cityId;
 
     public User() {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,19 +74,25 @@ public class User {
         this.email = email;
     }
 
-    public boolean isBlocked() {
-        return isBlocked;
+    public String isBlocked() {
+        String res;
+        if(isBlocked){
+            res = "заблокирован";
+        } else {
+            res = "не заблокирован";
+        }
+        return res;
     }
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
     }
 
-    public int getCityId() {
+    public Long getCityId() {
         return cityId;
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(Long cityId) {
         this.cityId = cityId;
     }
 
@@ -110,7 +116,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id.hashCode();
         result = 31 * result + firstName.hashCode();
         result = 31 * result + midName.hashCode();
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
@@ -118,7 +124,7 @@ public class User {
         result = 31 * result + password.hashCode();
         result = 31 * result + email.hashCode();
         result = 31 * result + (isBlocked ? 1 : 0);
-        result = 31 * result + cityId;
+        result = 31 * result + cityId.hashCode();
         return result;
     }
 

@@ -1,32 +1,39 @@
 package org.example.entity;
 
 public class FacilityToUser {
-    private int userId;
-    private int facilityId;
+    private Long userId;
+    private Long facilityId;
     private boolean isFavourite;
     private short userMark;
-    public FacilityToUser(){
+
+    public FacilityToUser() {
 
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public int getFacilityId() {
+    public Long getFacilityId() {
         return facilityId;
     }
 
-    public void setFacilityId(int facilityId) {
+    public void setFacilityId(Long facilityId) {
         this.facilityId = facilityId;
     }
 
-    public boolean isFavourite() {
-        return isFavourite;
+    public String isFavourite() {
+        String res;
+        if (isFavourite) {
+            res = "избранное";
+        } else {
+            res = "не избранное";
+        }
+        return res;
     }
 
     public void setFavourite(boolean favourite) {
@@ -56,8 +63,8 @@ public class FacilityToUser {
 
     @Override
     public int hashCode() {
-        int result = userId;
-        result = 31 * result + facilityId;
+        int result = userId.hashCode();
+        result = 31 * result + facilityId.hashCode();
         result = 31 * result + (isFavourite ? 1 : 0);
         result = 31 * result + (int) userMark;
         return result;

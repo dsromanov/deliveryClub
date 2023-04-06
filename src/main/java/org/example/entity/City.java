@@ -3,18 +3,18 @@ package org.example.entity;
 import java.util.Objects;
 
 public class City {
-    private int id;
+    private Long id;
     private String name;
 
     public City(){
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,7 +39,7 @@ public class City {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id.hashCode();
         result = 31 * result + name.hashCode();
         return result;
     }

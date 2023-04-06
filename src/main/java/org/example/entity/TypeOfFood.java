@@ -3,18 +3,18 @@ package org.example.entity;
 import java.util.Objects;
 
 public class TypeOfFood {
-    private int id;
+    private Long id;
     private String typeOfFood;
 
     public TypeOfFood() {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,8 +39,8 @@ public class TypeOfFood {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (typeOfFood != null ? typeOfFood.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + typeOfFood.hashCode();
         return result;
     }
 
