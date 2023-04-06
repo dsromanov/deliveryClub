@@ -55,12 +55,12 @@ public class UserService implements UserDAO {
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getMidName());
             statement.setString(3, user.getLastName());
-            statement.setString(4, user.getBirthdate().toString());
+            statement.setDate(4, user.getBirthdate());
             statement.setString(5, user.getPassword());
             statement.setString(6, user.getEmail());
             statement.setString(7, user.isBlocked());
-            statement.setString(8, user.getCityId().toString());
-            statement.setString(9, user.getId().toString());
+            statement.setLong(8, user.getCityId());
+            statement.setLong(9, user.getId());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -83,14 +83,14 @@ public class UserService implements UserDAO {
     public void add(User user) {
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(ADD);
-            statement.setString(1, user.getMidName());
-            statement.setString(2, user.getLastName());
-            statement.setString(3, user.getBirthdate().toString());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getEmail());
-            statement.setString(6, user.isBlocked());
-            statement.setString(7, user.getCityId().toString());
-            statement.setString(8, user.getId().toString());
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getMidName());
+            statement.setString(3, user.getLastName());
+            statement.setDate(4, user.getBirthdate());
+            statement.setString(5, user.getPassword());
+            statement.setString(6, user.getEmail());
+            statement.setString(7, user.isBlocked());
+            statement.setLong(8, user.getCityId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -101,11 +101,12 @@ public class UserService implements UserDAO {
 
     @Override
     public List<User> getAll() {
+        List<User> res = new ArrayList<>();
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
-            List<User> res = new ArrayList<>();
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
                 user.setFirstName(resultSet.getString("firstName"));
@@ -117,13 +118,12 @@ public class UserService implements UserDAO {
                 user.setBlocked(resultSet.getBoolean("is_blocked"));
                 user.setCityId(resultSet.getLong("cityId"));
                 res.add(user);
-            } else {
-                return null;
             }
-            return res;
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return res;
     }
 }

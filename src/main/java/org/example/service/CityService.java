@@ -45,7 +45,7 @@ public class CityService implements CityDAO {
 
         try (Connection connection = ConnectionManager.openConnection();) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1, city.getId().toString());
+            statement.setLong(1, city.getId());
             statement.setString(2, city.getName());
             statement.executeUpdate();
 
@@ -58,8 +58,8 @@ public class CityService implements CityDAO {
     public void remove(City city) {
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE);
-            statement.setString(1, city.getId().toString());
-            statement.setString(2,city.getName());
+            statement.setLong(1, city.getId());
+            statement.setString(2, city.getName());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -101,22 +101,22 @@ public class CityService implements CityDAO {
 
     @Override
     public List<City> getAll() {
+        List<City> res = new ArrayList<>();
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
-            List<City> res = new ArrayList<>();
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 City city = new City();
                 city.setId(resultSet.getLong("id"));
                 city.setName(resultSet.getString("name"));
                 res.add(city);
-            } else {
-                return null;
             }
-            return res;
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return res;
     }
 }

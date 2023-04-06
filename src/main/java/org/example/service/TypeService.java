@@ -49,8 +49,8 @@ public class TypeService implements TypeDAO {
         try (Connection connection = ConnectionManager.openConnection();) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, type.getType());
-            statement.setString(2, type.getTypeOfFoodId().toString());
-            statement.setString(3, type.getId().toString());
+            statement.setLong(2, type.getTypeOfFoodId());
+            statement.setLong(3, type.getId());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -74,7 +74,7 @@ public class TypeService implements TypeDAO {
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(ADD);
             statement.setString(1, type.getType());
-            statement.setString(2, type.getTypeOfFoodId().toString());
+            statement.setLong(2, type.getTypeOfFoodId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -104,23 +104,22 @@ public class TypeService implements TypeDAO {
 
     @Override
     public List<Type> getAll() {
+        List<Type> res = new ArrayList<>();
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
-            List<Type> res = new ArrayList<>();
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 Type type = new Type();
                 type.setId(resultSet.getLong("id"));
                 type.setType(resultSet.getString("type"));
                 type.setTypeOfFoodId(resultSet.getLong("typeOfFoodId"));
                 res.add(type);
-            } else {
-                return null;
             }
-            return res;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return res;
     }
 }

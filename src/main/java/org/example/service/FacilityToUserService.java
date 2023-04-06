@@ -47,10 +47,10 @@ public class FacilityToUserService implements FacilityToUserDAO {
 
         try (Connection connection = ConnectionManager.openConnection();) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1, facilityToUser.getUserId().toString());
-            statement.setString(2, facilityToUser.getFacilityId().toString());
+            statement.setLong(1, facilityToUser.getUserId());
+            statement.setLong(2, facilityToUser.getFacilityId());
             statement.setString(3, facilityToUser.isFavourite());
-            statement.setString(4, String.valueOf(facilityToUser.getUserMark()));
+            statement.setShort(4, facilityToUser.getUserMark());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -74,10 +74,10 @@ public class FacilityToUserService implements FacilityToUserDAO {
     public void add(FacilityToUser facilityToUser) {
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(ADD);
-            statement.setString(1, facilityToUser.getUserId().toString());
-            statement.setString(2, facilityToUser.getFacilityId().toString());
+            statement.setLong(1, facilityToUser.getUserId());
+            statement.setLong(2, facilityToUser.getFacilityId());
             statement.setString(3, facilityToUser.isFavourite());
-            statement.setString(4, String.valueOf(facilityToUser.getUserMark()));
+            statement.setShort(4, facilityToUser.getUserMark());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -87,24 +87,23 @@ public class FacilityToUserService implements FacilityToUserDAO {
 
     @Override
     public List<FacilityToUser> getAll() {
+        List<FacilityToUser> res = new ArrayList<>();
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
-            List<FacilityToUser> res = new ArrayList<>();
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 FacilityToUser facilityToUser = new FacilityToUser();
                 facilityToUser.setUserId(resultSet.getLong("userId"));
                 facilityToUser.setFacilityId(resultSet.getLong("facilityId"));
                 facilityToUser.setFavourite(resultSet.getBoolean("isFavourite"));
                 facilityToUser.setUserMark(resultSet.getShort("userMark"));
                 res.add(facilityToUser);
-            } else {
-                return null;
             }
-            return res;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return res;
     }
 }

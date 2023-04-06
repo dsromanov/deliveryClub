@@ -47,7 +47,7 @@ public class TypeOfFoodService implements TypeOfFoodDAO {
 
         try (Connection connection = ConnectionManager.openConnection();) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1, typeOfFood.getId().toString());
+            statement.setLong(1, typeOfFood.getId());
             statement.setString(2, typeOfFood.getTypeOfFood());
             statement.executeUpdate();
 
@@ -60,7 +60,7 @@ public class TypeOfFoodService implements TypeOfFoodDAO {
     public void remove(TypeOfFood typeOfFood) {
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE);
-            statement.setString(1, typeOfFood.getId().toString());
+            statement.setLong(1, typeOfFood.getId());
             statement.setString(2,typeOfFood.getTypeOfFood());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -104,22 +104,22 @@ public class TypeOfFoodService implements TypeOfFoodDAO {
 
     @Override
     public List<TypeOfFood> getAll() {
+        List<TypeOfFood> res = new ArrayList<>();
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
-            List<TypeOfFood> res = new ArrayList<>();
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 TypeOfFood typeOfFood = new TypeOfFood();
                 typeOfFood.setId(resultSet.getLong("id"));
                 typeOfFood.setTypeOfFood(resultSet.getString("type_of_food"));
                 res.add(typeOfFood);
-            } else {
-                return null;
             }
-            return res;
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return res;
     }
 }

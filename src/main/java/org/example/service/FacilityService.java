@@ -52,10 +52,10 @@ public class FacilityService implements FacilityDAO {
         try (Connection connection = ConnectionManager.openConnection();) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, facility.getName());
-            statement.setString(2, String.valueOf(facility.getRating()));
-            statement.setString(3, facility.getCityId().toString());
-            statement.setString(4, facility.getTypeId().toString());
-            statement.setString(5, facility.getId().toString());
+            statement.setDouble(2, facility.getRating());
+            statement.setLong(3, facility.getCityId());
+            statement.setLong(4, facility.getTypeId());
+            statement.setLong(5, facility.getId());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -79,9 +79,9 @@ public class FacilityService implements FacilityDAO {
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(ADD);
             statement.setString(1, facility.getName());
-            statement.setString(2, String.valueOf(facility.getRating()));
-            statement.setString(3, facility.getCityId().toString());
-            statement.setString(4, facility.getTypeId().toString());
+            statement.setDouble(2, facility.getRating());
+            statement.setLong(3, facility.getCityId());
+            statement.setLong(4, facility.getTypeId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -113,11 +113,12 @@ public class FacilityService implements FacilityDAO {
 
     @Override
     public List<Facility> getAll() {
+        List<Facility> res = new ArrayList<>();
         try (Connection connection = ConnectionManager.openConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
-            List<Facility> res = new ArrayList<>();
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 Facility facility = new Facility();
                 facility.setId(resultSet.getLong("id"));
                 facility.setName(resultSet.getString("name"));
@@ -125,13 +126,11 @@ public class FacilityService implements FacilityDAO {
                 facility.setCityId(resultSet.getLong("cityId"));
                 facility.setTypeId(resultSet.getLong("typeId"));
                 res.add(facility);
-            } else {
-                return null;
             }
-            return res;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return res;
     }
 }
