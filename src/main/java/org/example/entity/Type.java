@@ -3,7 +3,6 @@ package org.example.entity;
 public class Type {
     private Long id;
     private  String type;
-    private Long typeOfFoodId;
     public Type(){
 
     }
@@ -24,14 +23,6 @@ public class Type {
         this.type = type;
     }
 
-    public Long getTypeOfFoodId() {
-        return typeOfFoodId;
-    }
-
-    public void setTypeOfFoodId(Long typeOfFoodId) {
-        this.typeOfFoodId = typeOfFoodId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,8 +30,7 @@ public class Type {
 
         Type type1 = (Type) o;
 
-        if (id != type1.id) return false;
-        if (typeOfFoodId != type1.typeOfFoodId) return false;
+        if (!id.equals(type1.id)) return false;
         return type.equals(type1.type);
     }
 
@@ -48,7 +38,6 @@ public class Type {
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + type.hashCode();
-        result = 31 * result + (typeOfFoodId != null ? typeOfFoodId.hashCode() : 0);
         return result;
     }
 
@@ -57,7 +46,6 @@ public class Type {
         return "Type{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", typeOfFoodId=" + typeOfFoodId +
                 '}';
     }
 }

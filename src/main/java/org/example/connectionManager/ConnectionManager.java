@@ -1,28 +1,29 @@
 package org.example.connectionManager;
 
+import org.example.propertiesUtil.PropertiesUtil;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class ConnectionManager {
-    private static final String PASSWORD_KEY = "12345678";
-    private static final String USERNAME_KEY = "postgres";
-    private static final String URL_KEY = "jdbc:postgresql://localhost:5432/deliveryClub";
+    private static final String PASSWORD_KEY = "password";
+    private static final String USERNAME_KEY = "username";
+    private static final String URL_KEY = "url";
 
-    private ConnectionManager() {
+    public ConnectionManager() {
 
     }
 
 
-    public static Connection openConnection() throws SQLException {
+    public Connection openConnection() throws SQLException {
         Connection conn = null;
         try {
             Class.forName("java.sql.Driver");
             conn = DriverManager.getConnection(
-                    URL_KEY,
-                    USERNAME_KEY,
-                    PASSWORD_KEY
+                    PropertiesUtil.get(URL_KEY),
+                    PropertiesUtil.get(USERNAME_KEY),
+                    PropertiesUtil.get(PASSWORD_KEY)
             );
             System.out.println("Connection OK");
         } catch (ClassNotFoundException e) {

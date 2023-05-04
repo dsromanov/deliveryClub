@@ -1,8 +1,7 @@
-package org.example.service;
+package org.example.daoImplement;
 
 import org.example.connectionManager.ConnectionManager;
 import org.example.dao.FacilityDAO;
-import org.example.entity.Facility;
 import org.example.entity.Facility;
 
 import java.sql.Connection;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacilityService implements FacilityDAO {
+public class FacilityDaoImpl implements FacilityDAO {
     private static final String ADD = "INSERT INTO facility(name, rating, cityId, typeId) VALUES(?,?,?,?)";
     private static final String DELETE = "DELETE FROM facility WHERE id=?";
     private static final String UPDATE = "UPDATE facility SET name=?, rating=?, cityId=?, typeId=? WHERE id=?";
@@ -21,12 +20,17 @@ public class FacilityService implements FacilityDAO {
 
     private static final String GET_ALL = "SELECT id,name,rating,cityId, typeId FROM facility";
 
+    private final ConnectionManager builder = new ConnectionManager();
+    protected Connection getConnection() throws SQLException {
+        return builder.openConnection();
+    }
+
 
     @Override
     public Facility getById(Long id) {
 
 
-        try (Connection connection = ConnectionManager.openConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -49,7 +53,7 @@ public class FacilityService implements FacilityDAO {
     @Override
     public void update(Facility facility) {
 
-        try (Connection connection = ConnectionManager.openConnection();) {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, facility.getName());
             statement.setDouble(2, facility.getRating());
@@ -65,7 +69,7 @@ public class FacilityService implements FacilityDAO {
 
     @Override
     public void remove(Long id) {
-        try (Connection connection = ConnectionManager.openConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE);
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -76,7 +80,7 @@ public class FacilityService implements FacilityDAO {
 
     @Override
     public void add(Facility facility) {
-        try (Connection connection = ConnectionManager.openConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(ADD);
             statement.setString(1, facility.getName());
             statement.setDouble(2, facility.getRating());
@@ -90,7 +94,7 @@ public class FacilityService implements FacilityDAO {
 
     @Override
     public Facility getByName(String name) {
-        try (Connection connection = ConnectionManager.openConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_BY_NAME);
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
@@ -114,7 +118,7 @@ public class FacilityService implements FacilityDAO {
     @Override
     public List<Facility> getAll() {
         List<Facility> res = new ArrayList<>();
-        try (Connection connection = ConnectionManager.openConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL);
             ResultSet resultSet = statement.executeQuery();
 
